@@ -1,9 +1,9 @@
 package br.com.teste.emprestimo.service;
 
-import br.com.teste.emprestimo.entity.Pessoa;
 import br.com.teste.emprestimo.enums.TipoIdentificadorEnum;
 import br.com.teste.emprestimo.exception.BusinessException;
 import br.com.teste.emprestimo.exception.RegistroDuplicadoException;
+import br.com.teste.emprestimo.mapper.PessoaMapper;
 import br.com.teste.emprestimo.payload.req.NovaPessoaDto;
 import br.com.teste.emprestimo.payload.res.PessoaDto;
 import br.com.teste.emprestimo.payload.res.ValidacaoIdentificadorDto;
@@ -35,17 +35,10 @@ public class PessoaService {
       throw new RegistroDuplicadoException("Já possui uma pessoa com este identificador");
     }
 
-    var pessoa = new Pessoa();
-    pessoa.setNome(novaPessoaDto.nome());
-    pessoa.setDataNascimento(novaPessoaDto.dataNascimento());
-    pessoa.setIdentificador(identificadorNums);
-    pessoa.setTipoIdentificador(tipoIdentificadorEnum.getCodigo());
-    pessoa.setValorMinMensal(tipoIdentificadorEnum.getVlrMinMensal());
-    pessoa.setValorMaxEmprestimo(tipoIdentificadorEnum.getVlrMaxEmprestimo());
+    var pessoa = PessoaMapper.toPessoa(novaPessoaDto, identificadorNums, tipoIdentificadorEnum);
+    var bdPessoa = pessoaRepository.save(pessoa);
 
-    var novaPessoa = pessoaRepository.save(pessoa);
-
-    return new PessoaDto(novaPessoa.getId(), novaPessoa.getNome(), novaPessoa.getDataNascimento(), novaPessoa.getIdentificador(), novaPessoa.getTipoIdentificador(), novaPessoa.getValorMinMensal(), novaPessoa.getValorMaxEmprestimo());
+    return PessoaMapper.toPessoaDto(bdPessoa);
   }
 
   public boolean validarIdentificador(String identificador, String tipoIdentificador) {

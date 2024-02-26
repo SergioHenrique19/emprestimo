@@ -3,6 +3,8 @@ package br.com.teste.emprestimo.service;
 import br.com.teste.emprestimo.entity.Emprestimo;
 import br.com.teste.emprestimo.enums.TipoIdentificadorEnum;
 import br.com.teste.emprestimo.exception.BusinessException;
+import br.com.teste.emprestimo.mapper.EmprestimoMapper;
+import br.com.teste.emprestimo.mapper.PessoaMapper;
 import br.com.teste.emprestimo.payload.req.NovoEmprestimoDto;
 import br.com.teste.emprestimo.payload.res.EmprestimoDto;
 import br.com.teste.emprestimo.payload.res.PessoaDto;
@@ -16,6 +18,7 @@ import java.time.LocalDate;
 @Service
 @AllArgsConstructor
 public class EmprestimoService {
+
   private final EmprestimoRepository emprestimoRepository;
   private final PessoaRepository pessoaRepository;
 
@@ -33,16 +36,11 @@ public class EmprestimoService {
     if ((novoEmprestimoDto.valorEmprestimo()/ novoEmprestimoDto.numeroParcelas()) < dadosTipoIdentificador.getVlrMinMensal())
       throw new BusinessException("Valor é inferior ao limite mínimo", "mensagem");
 
-    var emprestimo = new Emprestimo();
-    emprestimo.setDataCriacao(LocalDate.now());
-    emprestimo.setValorEmprestimo(novoEmprestimoDto.valorEmprestimo());
-    emprestimo.setNumeroParcela(novoEmprestimoDto.numeroParcelas());
-    emprestimo.setStatusPagamento("PAGO");
-    emprestimo.setPessoa(pessoa);
+    var emprestimo = EmprestimoMapper.toEmprestimo(novoEmprestimoDto, pessoa);
+    var bdEmprestimo = emprestimoRepository.save(emprestimo);
+    var pessoaDto = PessoaMapper.toPessoaDto(pessoa);
 
-    var novoEmprestimo = emprestimoRepository.save(emprestimo);
-    var pessoaDto = new PessoaDto(pessoa.getId(), pessoa.getNome(), pessoa.getDataNascimento(), pessoa.getIdentificador(), pessoa.getTipoIdentificador(), pessoa.getValorMinMensal(), pessoa.getValorMaxEmprestimo());
-
-    return new EmprestimoDto(novoEmprestimo.getId(), novoEmprestimo.getDataCriacao(), novoEmprestimo.getValorEmprestimo(), novoEmprestimo.getNumeroParcela(), emprestimo.getStatusPagamento(), pessoaDto);
+    return EmprestimoMapper.toEmprestimoDto(bdEmprestimo, pessoaDto);
   }
+
 }
