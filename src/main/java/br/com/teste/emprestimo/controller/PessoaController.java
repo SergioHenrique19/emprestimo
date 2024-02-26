@@ -20,4 +20,12 @@ public class PessoaController {
     return new ResponseEntity<>(pessoaService.cadastrarPessoa(novaPessoaDto), HttpStatus.CREATED);
   }
 
+  @GetMapping
+  public ResponseEntity<Object> buscarPessoas(@RequestParam(required = false) String identificador) {
+    if (identificador == null)
+      return new ResponseEntity<>(pessoaService.buscarPessoas(), HttpStatus.OK);
+    else
+      return new ResponseEntity<>(pessoaService.buscarPessoa(identificador), HttpStatus.OK);
+  }
+
 }

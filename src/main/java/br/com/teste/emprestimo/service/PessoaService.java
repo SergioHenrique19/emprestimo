@@ -12,6 +12,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class PessoaService {
@@ -39,6 +43,21 @@ public class PessoaService {
     var bdPessoa = pessoaRepository.save(pessoa);
 
     return PessoaMapper.toPessoaDto(bdPessoa);
+  }
+
+  public PessoaDto buscarPessoa(String identificador) {
+    var identificadorNums = identificador.replaceAll("[^0-9]", "");
+    var pessoa = pessoaRepository.findByIdentificador(identificadorNums);
+
+    if (pessoa == null) {
+      throw new NoSuchElementException("Não foi encontrado pessoa com identificador informado");
+    }
+
+    return PessoaMapper.toPessoaDto(pessoa);
+  }
+
+  public List<PessoaDto> buscarPessoas() {
+    return pessoaRepository.findAll().stream().map(PessoaMapper::toPessoaDto).collect(Collectors.toList());
   }
 
   public boolean validarIdentificador(String identificador, String tipoIdentificador) {
