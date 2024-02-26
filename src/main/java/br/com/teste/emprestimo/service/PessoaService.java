@@ -3,6 +3,7 @@ package br.com.teste.emprestimo.service;
 import br.com.teste.emprestimo.entity.Pessoa;
 import br.com.teste.emprestimo.enums.TipoIdentificadorEnum;
 import br.com.teste.emprestimo.exception.BusinessException;
+import br.com.teste.emprestimo.exception.RegistroDuplicadoException;
 import br.com.teste.emprestimo.payload.req.NovaPessoaDto;
 import br.com.teste.emprestimo.payload.res.PessoaDto;
 import br.com.teste.emprestimo.payload.res.ValidacaoIdentificadorDto;
@@ -30,6 +31,10 @@ public class PessoaService {
       throw new BusinessException("Identificador do tipo " + tipoIdentificadorEnum.getCodigo() + " inválido", "identificador");
     }
 
+    if (pessoaRepository.findByIdentificador(identificadorNums) != null) {
+      throw new RegistroDuplicadoException("Já possui uma pessoa com este identificador");
+    }
+
     var pessoa = new Pessoa();
     pessoa.setNome(novaPessoaDto.nome());
     pessoa.setDataNascimento(novaPessoaDto.dataNascimento());
@@ -45,9 +50,19 @@ public class PessoaService {
 
   public boolean validarIdentificador(String identificador, String tipoIdentificador) {
     if (tipoIdentificador.equals(TipoIdentificadorEnum.PF.getCodigo())) {
-      return restClient.get().uri("https://api-validador-cpf.vercel.app/validarcpf/" + identificador).retrieve().body(ValidacaoIdentificadorDto.class).valid();
+      return restClient
+          .get()
+          .uri("https://api-validador-cpf.vercel.app/validarcpf/" + identificador)
+          .retrieve()
+          .body(ValidacaoIdentificadorDto.class)
+          .valid();
     } else if (tipoIdentificador.equals(TipoIdentificadorEnum.PJ.getCodigo())) {
-      return restClient.get().uri("https://api-validador-cpf.vercel.app/validarcnpj/" + identificador).retrieve().body(ValidacaoIdentificadorDto.class).valid();
+      return restClient
+          .get()
+          .uri("https://api-validador-cpf.vercel.app/validarcnpj/" + identificador)
+          .retrieve()
+          .body(ValidacaoIdentificadorDto.class)
+          .valid();
     } else if (tipoIdentificador.equals(TipoIdentificadorEnum.EU.getCodigo())) {
       return (int) identificador.charAt(0) + (int) identificador.charAt(7) == 9;
     } else if (tipoIdentificador.equals(TipoIdentificadorEnum.AP.getCodigo())) {

@@ -42,6 +42,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
+  @ExceptionHandler({ RegistroDuplicadoException.class })
+  protected  ResponseEntity<Object> handleRegistroDuplicadoException(RegistroDuplicadoException ex) {
+    Map<String, String> errors = new HashMap<>();
+    errors.put("mensagem", ex.getMessage());
+    return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+  }
+
   @ExceptionHandler({ RuntimeException.class })
   protected ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
     return handleExceptionInternal(ex, "Erro interno. Contatar o desenvolvedor", new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
