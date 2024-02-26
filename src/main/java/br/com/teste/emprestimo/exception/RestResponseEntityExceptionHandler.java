@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -27,6 +28,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     });
 
     return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(value = { NoSuchElementException.class })
+  protected ResponseEntity<Object> handleNoSuchElementException(RuntimeException ex, WebRequest request) {
+    return handleExceptionInternal(ex, "Registro não encontrado", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
   }
 
   @ExceptionHandler({ BusinessException.class })
