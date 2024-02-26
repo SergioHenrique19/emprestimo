@@ -8,11 +8,8 @@ import br.com.teste.emprestimo.payload.res.PessoaDto;
 import br.com.teste.emprestimo.payload.res.ValidacaoIdentificadorDto;
 import br.com.teste.emprestimo.repository.PessoaRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-
-import java.math.BigDecimal;
 
 @Service
 @AllArgsConstructor

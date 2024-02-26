@@ -1,10 +1,7 @@
 package br.com.teste.emprestimo.controller;
 
-import br.com.teste.emprestimo.payload.req.NovaPessoaDto;
 import br.com.teste.emprestimo.payload.req.NovoEmprestimoDto;
-import br.com.teste.emprestimo.payload.res.EmprestimoDto;
 import br.com.teste.emprestimo.service.EmprestimoService;
-import br.com.teste.emprestimo.service.PessoaService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
