@@ -20,4 +20,9 @@ public class EmprestimoController {
     return new ResponseEntity<>(emprestimoService.cadastrarEmprestimo(novoEmprestimoDto), HttpStatus.CREATED);
   }
 
+  @GetMapping
+  public ResponseEntity<Object> buscarEmprestimos() {
+    return new ResponseEntity<>(emprestimoService.buscarEmprestimos(), HttpStatus.OK);
+  }
+
 }

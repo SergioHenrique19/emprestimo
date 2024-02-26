@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -41,6 +43,10 @@ public class EmprestimoService {
     var pessoaDto = PessoaMapper.toPessoaDto(pessoa);
 
     return EmprestimoMapper.toEmprestimoDto(bdEmprestimo, pessoaDto);
+  }
+
+  public List<EmprestimoDto> buscarEmprestimos() {
+    return emprestimoRepository.findAll().stream().map(EmprestimoMapper::toEmprestimoDto).collect(Collectors.toList());
   }
 
 }

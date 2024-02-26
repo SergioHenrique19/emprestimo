@@ -27,4 +27,9 @@ public class EmprestimoMapper {
         emprestimo.getNumeroParcela(), emprestimo.getStatusPagamento(), pessoaDto);
   }
 
+  public static EmprestimoDto toEmprestimoDto(Emprestimo emprestimo) {
+    return new EmprestimoDto(emprestimo.getId(), emprestimo.getDataCriacao(), emprestimo.getValorEmprestimo(),
+        emprestimo.getNumeroParcela(), emprestimo.getStatusPagamento(), PessoaMapper.toPessoaDto(emprestimo.getPessoa()));
+  }
+
 }
