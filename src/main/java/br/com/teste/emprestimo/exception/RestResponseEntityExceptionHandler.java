@@ -33,7 +33,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
   @ExceptionHandler(value = { NoSuchElementException.class })
   protected ResponseEntity<Object> handleNoSuchElementException(RuntimeException ex, WebRequest request) {
-    return handleExceptionInternal(ex, "Registro não encontrado", new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    Map<String, String> errors = new HashMap<>();
+    errors.put("mensagem", "Registro não encontrado");
+    return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler({ BusinessException.class })
