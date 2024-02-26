@@ -23,15 +23,15 @@ public class EmprestimoService {
     var pessoa = pessoaRepository.findByIdentificador(novoEmprestimoDto.identificador());
 
     if (pessoa == null)
-      throw new BusinessException("{\"identificador\": \"Não foi encontrado portador do identificador informado\"}");
+      throw new BusinessException("Não foi encontrado portador do identificador informado", "identificador");
 
     var dadosTipoIdentificador = TipoIdentificadorEnum.procurarPorCodigo(pessoa.getTipoIdentificador());
 
     if (novoEmprestimoDto.valorEmprestimo().compareTo(dadosTipoIdentificador.getVlrMaxEmprestimo()) > 0)
-      throw new BusinessException("{\"valorEmprestimo\": \"Valor ultrapassa o limite máximo\"}");
+      throw new BusinessException("Valor ultrapassa o limite máximo", "valorEmprestimo");
 
     if ((novoEmprestimoDto.valorEmprestimo()/ novoEmprestimoDto.numeroParcelas()) < dadosTipoIdentificador.getVlrMinMensal())
-      throw new BusinessException("{\"numeroParcelas\": \"Valor é inferior ao limite mínimo\"}");
+      throw new BusinessException("Valor é inferior ao limite mínimo", "mensagem");
 
     var emprestimo = new Emprestimo();
     emprestimo.setDataCriacao(LocalDate.now());

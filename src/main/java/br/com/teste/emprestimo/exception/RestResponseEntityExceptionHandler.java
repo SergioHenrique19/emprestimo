@@ -37,7 +37,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
   @ExceptionHandler({ BusinessException.class })
   protected ResponseEntity<Object> handleBusinessException(BusinessException ex) {
-    return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    Map<String, String> errors = new HashMap<>();
+    errors.put(ex.getCampo(), ex.getMessage());
+    return new ResponseEntity<>(errors, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler({ RuntimeException.class })

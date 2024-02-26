@@ -23,11 +23,11 @@ public class PessoaService {
     var tipoIdentificadorEnum = TipoIdentificadorEnum.procurarPorTamanho(identificadorNums.length());
 
     if (tipoIdentificadorEnum == null) {
-      throw new BusinessException("{\"identificador\": \"O tamanho do identificador somente com os números deve ser 11, 14, 8 ou 10\"}");
+      throw new BusinessException("O tamanho do identificador somente com os números deve ser 11, 14, 8 ou 10", "identificador");
     }
 
     if (!validarIdentificador(identificadorNums, tipoIdentificadorEnum.getCodigo())) {
-      throw new BusinessException("{\"identificador\": \"Identificador do tipo " + tipoIdentificadorEnum.getCodigo() + " inválido\"}");
+      throw new BusinessException("Identificador do tipo " + tipoIdentificadorEnum.getCodigo() + " inválido", "identificador");
     }
 
     var pessoa = new Pessoa();
