@@ -1,20 +1,18 @@
 package br.com.teste.emprestimo.enums;
 
-import java.math.BigDecimal;
-
 public enum TipoIdentificadorEnum {
-  PF("PF", 11, "Pessoa Física (PF)", BigDecimal.valueOf(300), BigDecimal.valueOf(10000)),
-  PJ("PJ", 14, "Pessoa Jurídica (PJ)", BigDecimal.valueOf(1000), BigDecimal.valueOf(100000)),
-  EU("EU", 8, "Estudante Universitário (EU)", BigDecimal.valueOf(100), BigDecimal.valueOf(10000)),
-  AP("AP", 10, "Aposentado (AP)", BigDecimal.valueOf(400), BigDecimal.valueOf(2500000));
+  PF("PF", 11, "Pessoa Física (PF)", 300.0, 10000.0),
+  PJ("PJ", 14, "Pessoa Jurídica (PJ)", 1000.0, 100000.0),
+  EU("EU", 8, "Estudante Universitário (EU)", 100.0, 10000.0),
+  AP("AP", 10, "Aposentado (AP)", 400.0, 2500000.0);
 
   private String codigo;
   private int tamanho;
   private String descricao;
-  private BigDecimal vlrMinMensal;
-  private BigDecimal vlrMaxEmprestimo;
+  private Double vlrMinMensal;
+  private Double vlrMaxEmprestimo;
 
-  TipoIdentificadorEnum(String codigo, int tamanho, String descricao, BigDecimal vlrMinMensal, BigDecimal vlrMaxEmprestimo) {
+  TipoIdentificadorEnum(String codigo, int tamanho, String descricao, Double vlrMinMensal, Double vlrMaxEmprestimo) {
     this.codigo = codigo;
     this.tamanho = tamanho;
     this.descricao = descricao;
@@ -34,17 +32,25 @@ public enum TipoIdentificadorEnum {
     return descricao;
   }
 
-  public BigDecimal getVlrMinMensal() {
+  public Double getVlrMinMensal() {
     return vlrMinMensal;
   }
 
-  public BigDecimal getVlrMaxEmprestimo() {
+  public Double getVlrMaxEmprestimo() {
     return vlrMaxEmprestimo;
   }
 
   public static TipoIdentificadorEnum procurarPorTamanho(int tamanho) {
     for (TipoIdentificadorEnum tie : TipoIdentificadorEnum.values()) {
       if (tamanho == tie.getTamanho()) return tie;
+    }
+
+    return null;
+  }
+
+  public static TipoIdentificadorEnum procurarPorCodigo(String codigo) {
+    for (TipoIdentificadorEnum tie : TipoIdentificadorEnum.values()) {
+      if (codigo.equals(tie.getCodigo())) return tie;
     }
 
     return null;

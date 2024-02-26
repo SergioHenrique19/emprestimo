@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "pessoa")
+@Table(name = "emprestimo")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -24,7 +24,7 @@ public class Emprestimo {
   private LocalDate dataCriacao;
 
   @Column(name = "valor_emprestimo")
-  private BigDecimal valorEmprestimo;
+  private Double valorEmprestimo;
 
   @Column(name = "numero_parcela")
   private Integer numeroParcela;

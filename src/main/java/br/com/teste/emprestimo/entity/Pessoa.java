@@ -31,8 +31,8 @@ public class Pessoa {
   private String tipoIdentificador;
 
   @Column(name = "valor_min_mensal")
-  private BigDecimal valorMinMensal;
+  private Double valorMinMensal;
 
   @Column(name = "valor_max_emprestimo")
-  private BigDecimal valorMaxEmprestimo;
+  private Double valorMaxEmprestimo;
 }

@@ -37,11 +37,12 @@ public class PessoaService {
     pessoa.setNome(novaPessoaDto.nome());
     pessoa.setDataNascimento(novaPessoaDto.dataNascimento());
     pessoa.setIdentificador(identificadorNums);
-    pessoa.setTipoIdentificador(tipoIdentificadorEnum.getDescricao());
+    pessoa.setTipoIdentificador(tipoIdentificadorEnum.getCodigo());
     pessoa.setValorMinMensal(tipoIdentificadorEnum.getVlrMinMensal());
     pessoa.setValorMaxEmprestimo(tipoIdentificadorEnum.getVlrMaxEmprestimo());
 
     var novaPessoa = pessoaRepository.save(pessoa);
+
     return new PessoaDto(novaPessoa.getId(), novaPessoa.getNome(), novaPessoa.getDataNascimento(), novaPessoa.getIdentificador(), novaPessoa.getTipoIdentificador(), novaPessoa.getValorMinMensal(), novaPessoa.getValorMaxEmprestimo());
   }
 
